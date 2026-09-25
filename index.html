@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI Core — интерактивная 3D-сцена</title>
+<meta name="description" content="Сцена, собранная агентом через Blender + MCP. Крути мышью.">
+<meta property="og:title" content="AI Core — интерактивная 3D-сцена">
+<meta property="og:description" content="Собрано агентом Hermes через Blender MCP. Крути мышью 👇">
+<meta property="og:image" content="https://eugene55555.github.io/git-blender/preview.png">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='55' r='28' fill='%23111'/><ellipse cx='50' cy='55' rx='44' ry='14' fill='none' stroke='%2338d0ff' stroke-width='4'/><ellipse cx='50' cy='55' rx='38' ry='12' fill='none' stroke='%23c04cff' stroke-width='3' transform='rotate(64 50 55)'/></svg>">
+<script type="module" src="https://cdn.jsdelivr.net/npm/@google/model-viewer@4.3.1/dist/model-viewer.min.js"
+  integrity="sha384-cprcVQt7wbUl0xngF3PGP6yBB7n4/t+4AoAMG9biiMCGFiWOdzUH10Ie2COTqFNW" crossorigin="anonymous"></script>
+<style>
+  :root{
+    --cyan:#38d0ff; --magenta:#c04cff; --bg:#05060a;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%;background:var(--bg);color:#e8ecf4;
+    font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Inter,Arial,sans-serif}
+  body{display:flex;flex-direction:column;min-height:100%;overflow:hidden}
+  .glowbg{position:fixed;inset:0;z-index:0;pointer-events:none;
+    background:
+      radial-gradient(600px 380px at 18% 12%, rgba(56,208,255,.14), transparent 65%),
+      radial-gradient(700px 420px at 84% 78%, rgba(192,76,255,.13), transparent 65%),
+      radial-gradient(900px 600px at 50% 50%, rgba(20,24,48,.55), transparent 70%);}
+  header{position:relative;z-index:2;padding:18px 22px 6px;display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+  h1{margin:0;font-size:clamp(18px,2.6vw,28px);letter-spacing:.4px;
+    background:linear-gradient(90deg,var(--cyan),var(--magenta));
+    -webkit-background-clip:text;background-clip:text;color:transparent}
+  .subtitle{color:#93a0b8;font-size:clamp(12px,1.5vw,15px)}
+  main{position:relative;z-index:1;flex:1;min-height:0;padding:8px clamp(10px,2vw,22px) 0;display:flex}
+  .stage{flex:1;position:relative;border-radius:22px;overflow:hidden;
+    border:1px solid rgba(120,140,200,.16);
+    box-shadow:0 24px 80px rgba(0,0,0,.55), 0 0 0 1px rgba(0,0,0,.2) inset}
+  model-viewer{width:100%;height:100%;background:
+    radial-gradient(120% 90% at 50% 8%, #101427 0%, #07080f 55%, #04050a 100%);
+    --poster-color:transparent;outline:none}
+  .controls{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;
+    padding:14px 12px;position:relative;z-index:2}
+  button{appearance:none;border:1px solid rgba(140,160,220,.25);color:#dfe6f5;
+    background:rgba(22,26,44,.6);backdrop-filter:blur(8px);
+    padding:10px 16px;border-radius:12px;font-size:14px;cursor:pointer;
+    transition:transform .12s ease, border-color .2s, background .2s}
+  button:hover{border-color:rgba(80,200,255,.55);background:rgba(30,38,66,.7);transform:translateY(-1px)}
+  button:active{transform:translateY(0)}
+  button.active{border-color:var(--cyan);color:#bdf0ff;box-shadow:0 0 18px rgba(56,208,255,.25)}
+  footer{position:relative;z-index:2;padding:6px 22px 14px;color:#6c7891;font-size:12px;
+    display:flex;gap:18px;flex-wrap:wrap;justify-content:center}
+  footer a{color:#8fa8ce;text-decoration:none}
+  footer a:hover{color:#cfe1ff}
+  .hint{color:#5e6a82;font-size:12.5px;padding:2px 22px 0;text-align:center;position:relative;z-index:2}
+  @media (max-width:560px){ .hint{display:none} }
+</style>
+</head>
+<body>
+<div class="glowbg"></div>
+
+<header>
+  <h1>AI Core</h1>
+  <div class="subtitle">интерактивная 3D-сцена · Blender&nbsp;+&nbsp;MCP · собрана агентом на сервере</div>
+</header>
+
+<main>
+  <div class="stage">
+    <model-viewer id="mv" src="scene/ai_core.glb"
+      alt="AI Core — тёмная сфера с неоновыми орбитальными кольцами"
+      camera-controls touch-action="pan-y"
+      autoplay animation-name="Orbit" auto-rotate auto-rotate-delay="800" rotation-per-second="12deg"
+      shadow-intensity="0.7" exposure="1.15" environment-image="neutral"
+      camera-orbit="25deg 78deg auto" field-of-view="30deg"
+      interaction-prompt="none">
+    </model-viewer>
+  </div>
+</main>
+
+<div class="hint">крути мышью · колесо — зум · тяни пальцем на телефоне</div>
+
+<div class="controls">
+  <button id="btn-anim">⏸ Пауза</button>
+  <button id="btn-spin" class="active">↻ Автоповорот</button>
+  <button id="btn-reset">⟲ По центру</button>
+  <button id="btn-fs">⛶ Во весь экран</button>
+</div>
+
+<footer>
+  <span>Исходник: <a href="scene/ai_core.blend">ai_core.blend</a> · модель: <a href="scene/ai_core.glb">ai_core.glb</a></span>
+  <span>Сгенерировано кодом через Blender MCP (Blender 5.0 headless) · Hermes 🦋</span>
+</footer>
+
+<script>
+  const mv = document.getElementById('mv');
+  const btnAnim = document.getElementById('btn-anim');
+
+  mv.addEventListener('load', () => {
+    console.log('Model loaded. Animations:', mv.availableAnimations);
+  });
+
+  btnAnim.addEventListener('click', () => {
+    if (mv.paused) { mv.play({animationName:'Orbit'}); btnAnim.textContent = '⏸ Пауза'; }
+    else { mv.pause(); btnAnim.textContent = '▶ Запустить'; }
+  });
+
+  const btnSpin = document.getElementById('btn-spin');
+  btnSpin.addEventListener('click', () => {
+    const on = mv.toggleAttribute('auto-rotate');
+    btnSpin.classList.toggle('active', on);
+  });
+
+  document.getElementById('btn-reset').addEventListener('click', () => {
+    mv.cameraTarget = 'auto auto auto';
+    mv.cameraOrbit = '25deg 78deg auto';
+    mv.fieldOfView = '30deg';
+    mv.resetTurntableRotation ? mv.resetTurntableRotation(0) : null;
+  });
+
+  document.getElementById('btn-fs').addEventListener('click', () => {
+    const el = document.querySelector('.stage');
+    if (document.fullscreenElement) document.exitFullscreen();
+    else (el.requestFullscreen ? el.requestFullscreen() : null);
+  });
+</script>
+</body>
+</html>
