@@ -131,8 +131,8 @@ sc.cycles.use_denoising = True
 sc.render.resolution_x = 720
 sc.render.resolution_y = 720
 sc.render.image_settings.file_format = 'PNG'
-sc.render.filepath = "/home/kat/blender-mcp/renders/ai_core_demo"
+sc.render.filepath = "/home/kat/hermes-workspace/git-repo/git-blender/renders/ai_core_demo"
 
 # ---------- save ----------
-bpy.ops.wm.save_as_mainfile(filepath="/home/kat/blender-mcp/ai_core.blend")
+bpy.ops.wm.save_as_mainfile(filepath="/home/kat/hermes-workspace/git-repo/git-blender/scene/ai_core.blend")
 print("AI_CORE_SCENE_READY", len(bpy.data.objects), "objects")

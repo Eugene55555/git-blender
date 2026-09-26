@@ -22,7 +22,7 @@ spin("Cable", 2.0)
 import os
 os.makedirs("/home/kat/hermes-workspace/git-repo/git-blender/scene", exist_ok=True)
 
-bpy.ops.wm.save_as_mainfile(filepath="/home/kat/blender-mcp/ai_core.blend")
+bpy.ops.wm.save_as_mainfile(filepath="/home/kat/hermes-workspace/git-repo/git-blender/scene/ai_core.blend")
 bpy.ops.export_scene.gltf(
     filepath="/home/kat/hermes-workspace/git-repo/git-blender/scene/ai_core.glb",
     export_format='GLB',
